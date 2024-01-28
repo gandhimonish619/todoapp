@@ -31,10 +31,12 @@ Build and run the application using maven commands.
 ```
 
 ### Service health can be monitored at 
-[Service Health URL](http://localhost:8080/actuator/health)
+[Service Health URL](http://localhost:8080/actuator/health) 
+http://localhost:8080/actuator/health
 
 ### H2 Database console is available at 
-[H2 Console](http://localhost:8080/h2-console)
+[H2 Console](http://localhost:8080/h2-console) 
+http://localhost:8080/h2-console
 
 
 ### Release Information 
