@@ -1,0 +1,204 @@
+openapi: 3.0.1
+info:
+  title: Todo Backend
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+
+  /todo-requests:
+    get:
+      summary: Get the list of all Todos
+      operationId: todoGetAll
+      responses:
+        200:
+          description: List of all Todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoListResponse'
+        400:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new todo
+      operationId: todoCreate
+      requestBody:
+        description: The todo to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoRequest'
+      responses:
+        201:
+          description: The created Todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+        400:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /todo-requests/{id}:
+    get:
+      summary: Get one todo
+      operationId: todoGetOne
+      parameters:
+        - name: id
+          in: path
+          description: The id of the todo
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 42
+      responses:
+        200:
+          description: The requested Todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+        400:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete one todo
+      operationId: todoDeleteOne
+      parameters:
+        - name: id
+          in: path
+          description: The id of the todo
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 42
+      responses:
+        204:
+          description: No content
+        400:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update an existing todo
+      operationId: todoUpdate
+      parameters:
+        - name: id
+          in: path
+          description: The id of the todo
+          required: true
+          schema:
+            format: int64
+            type: integer
+          example: 42
+      requestBody:
+        description: The todo to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoRequest'
+      responses:
+        200:
+          description: The updated Todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+        400:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    TodoResponse:
+      description: Object representing a Todo
+      type: object
+      properties:
+        id:
+          description: id of the entity
+          format: int64
+          type: integer
+          example: 42
+        title:
+          description: title of the todo
+          type: string
+          example: My task
+        completed:
+          description: whether the todo is completed or not
+          type: boolean
+          example: false
+        url:
+          description: url associated with the todo
+          type: string
+        order:
+          format: int32
+          description: order in the priority list
+          type: integer
+          example: 10
+    CreateTodoRequest:
+      description: Object representing a Todo
+      type: object
+      required:
+        - title
+        - order
+      properties:
+        title:
+          description: title of the todo
+          type: string
+          example: My task
+        completed:
+          description: whether the todo is completed or not
+          type: boolean
+          example: false
+        url:
+          description: url associated with the todo
+          type: string
+        order:
+          format: int32
+          description: order in the priority list
+          type: integer
+          example: 10
+    TodoListResponse:
+      description: Object representing a Todo
+      type: object
+      properties:
+        id:
+          description: id of the entity
+          format: int64
+          type: integer
+          example: 42
+        title:
+          description: title of the todo
+          type: string
+          example: My task
+    ErrorResponse:
+     description: Error Response Object
+     type: object
+     required:
+       - errorCode
+       - errorMessage
+     properties:
+       errorCode:
+        description: holds error code
+        type: string
+       errorMessage:
+         description: holds error message
+         type: string

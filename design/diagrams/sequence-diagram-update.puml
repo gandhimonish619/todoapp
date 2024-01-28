@@ -1,0 +1,36 @@
+@startuml
+legend top left
+<color blue>TODO Application </color>
+CRUD operations for maintaining the todo list
+end legend
+
+title Sequence Diagram for Update FLow
+
+actor user as user
+participant TodoController as controller
+participant TodoExceptionHandler as handler
+participant TodoServiceImpl as service
+participant TodoRepository as repository
+database TodoDatabase as db
+
+
+user -> controller : update todo item
+controller -> service : update todo service call
+service -> repository : find item
+repository -> db : select query
+alt item not found case
+repository -> service : item not available
+service -> handler : handle custom exception
+handler -> controller : send error response
+controller -> user : <color red> ResponseEntity<TodoApiException> HTTP 400 with custom error code and message</color>
+else item found case
+repository -> service : item available
+service -> repository : update item
+repository -> db : update query
+db -> repository : updated
+repository -> service : successfully updated
+service -> controller : successfully updated
+user -> controller : updated todo item
+controller -> user : <color green> ResponseEntity<Response> HTTP 201 </color>
+end
+@enduml

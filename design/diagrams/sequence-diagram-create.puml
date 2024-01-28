@@ -1,0 +1,30 @@
+@startuml
+legend top left
+<color blue>TODO Application </color>
+CRUD operations for maintaining the todo list
+end legend
+
+title Sequence Diagram for Create FLow
+
+actor user as user
+participant TodoController as controller
+participant TodoExceptionHandler as handler
+participant TodoServiceImpl as service
+participant TodoRepository as repository
+database TodoDatabase as db
+
+alt validation failure case
+user -> controller : create todo item (without title)
+handler -> controller : Request validation failed - MethodArgumentNotValidException
+controller -> user : <color red> ResponseEntity<Response> HTTP 400 </color>
+else validation success scenario
+user -> controller : create todo item
+controller -> service : create todo service call
+service -> repository : persist details
+repository -> db : persist details
+db -> repository : successfully persisted
+repository -> service : item persisted
+service -> controller : item created
+controller -> user : <color green> ResponseEntity<Response> HTTP 201 </color>
+end
+@enduml

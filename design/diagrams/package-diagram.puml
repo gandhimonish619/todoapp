@@ -1,0 +1,17 @@
+@startuml
+!pragma layout smetana
+package com.husqvarna.todoapp
+{
+package constant{}
+package exception{}
+package mapper{}
+package persistence{
+package entity{}
+package repository{}
+}
+package rest{}
+package service{
+package impl{}
+}
+}
+@enduml
